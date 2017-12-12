@@ -1,12 +1,13 @@
 //============================================================================
 // Name        : SQLBakeryProject.cpp
-// Author      : 
+// Author      : Bryce Hoecker
 // Version     :
-// Copyright   : Your copyright notice
+// Copyright   :
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
 #include <iostream>
+#include <sqlite3.h>
 using namespace std;
 
 int main() {
