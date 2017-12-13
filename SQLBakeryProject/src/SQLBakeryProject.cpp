@@ -27,7 +27,7 @@ void DeleteAllDonuts(sqlite3* database);
 static vector<Donut*> donutVect;
 
 int main() {
-	int userChoice = 4;
+	int userChoice = 1;
 	int return_code;
 	sqlite3 *donutBase;
 	char *ErrMsg = 0;
@@ -214,7 +214,7 @@ void UpdateDonutPrice(sqlite3* database){
 
 	//
 	string flavor;
-	cout << "Please enter a Donut Flavor: ";
+	cout << "Please enter a Donut Flavor for update: ";
 	getline(cin, flavor);
 
 	double price;
@@ -230,8 +230,8 @@ void UpdateDonutPrice(sqlite3* database){
 	ss << "'" << flavor << "';";
 
 	sql = ss.str();
-	cout << "The sql string is: " << endl;
-	cout << sql << endl;
+//	cout << "The sql string is: " << endl;
+//	cout << sql << endl;
 
 	returnCode = sqlite3_exec(database, sql.c_str(), DonutSelectCallBack, 0, &errMsg);
 
@@ -244,7 +244,41 @@ void UpdateDonutPrice(sqlite3* database){
 	}
 }
 void UpdateDonutCost(sqlite3* database){
+	string sql;
+	stringstream ss;
+	int returnCode;
+	char* errMsg;
 
+	//
+	string flavor;
+	cout << "Please enter a Donut Flavor for update: ";
+	getline(cin, flavor);
+
+	double cost;
+	cout << "Please enter the new Cost: ";
+	cin >> cost;
+	cin.clear();
+	cin.ignore(32768, '\n');
+
+	//Build up the SQL Update statement based on user input
+	ss << "UPDATE Donuts set Cost = ";
+	ss << cost << " ";
+	ss << " WHERE Flavor = ";
+	ss << "'" << flavor << "';";
+
+	sql = ss.str();
+//	cout << "The sql string is: " << endl;
+//	cout << sql << endl;
+
+	returnCode = sqlite3_exec(database, sql.c_str(), DonutSelectCallBack, 0, &errMsg);
+
+	if (returnCode != SQLITE_OK){
+		cout << "Error inserting: " << sql << endl;
+		cout << "Error message: " << errMsg << endl;
+	}
+	else{
+		cout << "Donut sucessfully added!" << endl;
+	}
 }
 void DeleteAllDonuts(sqlite3* database){
 
