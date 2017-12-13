@@ -281,5 +281,22 @@ void UpdateDonutCost(sqlite3* database){
 	}
 }
 void DeleteAllDonuts(sqlite3* database){
+	string sql;
+	int returnCode;
+	char* errMsg;
 
+	sql = "DELETE FROM Donuts";
+
+//	cout << "The sql string is: " << endl;
+//	cout << sql << endl;
+
+	returnCode = sqlite3_exec(database, sql.c_str(), DonutSelectCallBack, 0, &errMsg);
+
+	if (returnCode != SQLITE_OK){
+		cout << "Error Deleting: " << sql << endl;
+		cout << "Error message: " << errMsg << endl;
+	}
+	else{
+		cout << "All Donuts sucessfully deleted." << endl;
+	}
 }
