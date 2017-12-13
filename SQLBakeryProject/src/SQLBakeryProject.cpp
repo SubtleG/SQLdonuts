@@ -13,6 +13,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
 static int DonutSelectCallBack(void* db, int argc, char **argv, char **colNames);
@@ -121,7 +122,59 @@ void PrintAllDonuts(sqlite3* database){
 	}
 }
 void AddADonut(sqlite3* database){
+	string sql;
+	stringstream ss;
+	int returnCode;
+	char* errMsg;
 
+	//
+	string flavor;
+	cout << "Please enter a Donut Flavor: ";
+	getline(cin, flavor);
+
+	double price;
+	cout << "Please enter the Price: ";
+	cin >> price;
+	cin.clear();
+	cin.ignore(32768, '\n');
+
+	double cost;
+	cout << "Please enter the Cost: ";
+	cin >> cost;
+	cin.clear();
+	cin.ignore(32768, '\n');
+
+	int calories;
+	cout << "Please enter the Calories: ";
+	cin >> calories;
+	cin.clear();
+	cin.ignore(32768, '\n');
+
+	string filling;
+	cout << "Please enter the Filling: ";
+	getline(cin, filling);
+
+	//Build up the SQL Insert statement based on user input
+	ss << "INSERT INTO Donuts (Flavor, Price, Cost, Calories, Filling) VALUES (";
+	ss << "'" << flavor << "', ";
+	ss << price << ", ";
+	ss << cost << ", ";
+	ss << calories << ", ";
+	ss << "'" << filling << "'); ";
+
+//	sql = ss.str();
+//	cout << "The sql string is: " << endl;
+	cout << sql << endl;
+
+	returnCode = sqlite3_exec(database, sql.c_str(), DonutSelectCallBack, 0, &errMsg);
+
+	if (returnCode != SQLITE_OK){
+		cout << "Error inserting: " << sql << endl;
+		cout << "Error message: " << errMsg << endl;
+	}
+	else{
+		cout << "Donut sucessfully added!" << endl;
+	}
 }
 void DeleteADonut(sqlite3* database){
 
