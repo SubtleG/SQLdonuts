@@ -177,7 +177,34 @@ void AddADonut(sqlite3* database){
 	}
 }
 void DeleteADonut(sqlite3* database){
+	string sql;
+	stringstream ss;
+	int returnCode;
+	char* errMsg;
 
+	string userFlavor;
+	cout << "Please enter a Donut to Delete: ";
+	getline(cin, userFlavor);
+
+	//Build up the SQL Insert statement based on user input
+	ss << "DELETE FROM Donuts ";
+	ss << "WHERE Flavor = ";
+	ss << "'" << userFlavor << "';";
+
+	sql = ss.str();
+
+//	cout << "The sql string is: " << endl;
+//	cout << sql << endl;
+
+	returnCode = sqlite3_exec(database, sql.c_str(), DonutSelectCallBack, 0, &errMsg);
+
+	if (returnCode != SQLITE_OK){
+		cout << "Error Deleting: " << sql << endl;
+		cout << "Error message: " << errMsg << endl;
+	}
+	else{
+		cout << "Donut sucessfully removed." << endl;
+	}
 }
 void UpdateDonutPrice(sqlite3* database){
 
